@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/:amount", "destination": "/api/:amount" }
+    { "source": "/:username/:bankhandle/:amount", "destination": "/api/:username/:bankhandle/:amount" }
   ]
 }
