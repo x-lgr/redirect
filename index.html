@@ -2,24 +2,61 @@
 <html>
 <head>
   <title>Redirecting to Payment...</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Auto redirect -->
   <script>
-    window.location.href = "upi://pay?pa=Rambansal@fam&pn=Payment&am=49&cu=INR&tn=Premium Access";
+    // Function to get amount from URL path
+    function getAmountFromURL() {
+      try {
+        // Get the full path (e.g., "/99" or "/149")
+        let path = window.location.pathname;
+        
+        // Remove leading and trailing slashes
+        let cleanPath = path.replace(/^\/|\/$/g, '');
+        
+        // Extract number from path
+        let matches = cleanPath.match(/\d+/);
+        
+        if (matches && matches[0]) {
+          let amount = parseInt(matches[0]);
+          if (!isNaN(amount) && amount > 0 && amount <= 100000) {
+            return amount;
+          }
+        }
+        
+        // Default amount
+        return 99;
+      } catch(e) {
+        return 99;
+      }
+    }
+
+    // Get amount and redirect immediately
+    const amount = getAmountFromURL();
+    const upiUrl = `upi://pay?pa=Rambansal@fam&pn=Payment&am=${amount}&cu=INR&tn=Premium%20Access`;
+    
+    // Instant redirect (no delay)
+    window.location.href = upiUrl;
   </script>
 
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      font-family: monospace;
+      background: black;
+      color: white;
+    }
+  </style>
 </head>
 
-<body style="text-align:center; font-family:sans-serif; padding-top:50px;">
-
-  <h2>Redirecting to Payment...</h2>
-  <p>Agar automatically open nahi hota, neeche button dabao 👇</p>
-
-  <a href="upi://pay?pa=Rambansal@fam&pn=Payment&am=49&cu=INR&tn=Premium Access">
-    <button style="padding:12px 20px; font-size:18px; cursor:pointer;">
-      💳 Pay ₹99
-    </button>
-  </a>
-
+<body>
+  <h3>Redirecting to Payment (₹<span id="amount"></span>)...</h3>
+  
+  <script>
+    document.getElementById('amount').textContent = amount;
+  </script>
 </body>
 </html>
